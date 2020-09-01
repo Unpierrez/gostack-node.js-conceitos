@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { uuid } = require("uuidv4");
 
-const { v4: uuid } = require('uuid');
+//const { v4: uuid } = require('uuid');
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.post("/repositories", (request, response) => {
     url,
     techs,
     likes: 0,
-  }
+  };
 
   repositories.push(repository);
 
@@ -39,10 +39,10 @@ app.put("/repositories/:id", (request, response) => {
    const { title, url, techs } = request.body;
    const { id } = request.params;
 
-   const findRepositoryIndex = repositories.findIndex(repositories => 
-    repository.id == id);
+   const findRepositoryIndex = repositories.findIndex(repository => 
+    repository.id === id);
 
-    if(findRepositoryIndex == -1){
+    if(findRepositoryIndex === -1){
       return response.status(400).json({error: 'Repositorie does not exist'});
     }
 
@@ -62,15 +62,15 @@ app.put("/repositories/:id", (request, response) => {
 
 app.delete("/repositories/:id", (request, response) => {
   
-  const { id } = request.params
+  const { id } = request.params;
 
-  const findRepositoryIndex = repositories.findIndex(repositories => 
-  repository.id == id);
+  const findRepositoryIndex = repositories.findIndex(repository => 
+  repository.id === id);
 
-  if(findRepositoryIndex > 0){
-    repositories.splice(findRepositoryIndex, 1)
+  if(findRepositoryIndex >= 0){
+    repositories.splice(findRepositoryIndex, 1);
   } else {
-    response.status(400).send({error: 'repositorie does not exist'});
+    response.status(400).json({error: 'repository does not exist'});
   }
 
   return response.status(204).send();
@@ -81,7 +81,7 @@ app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params;
 
   const findRepositoryIndex = repositories.findIndex(repository => 
-    repository.id == id);
+    repository.id === id);
 
   if(findRepositoryIndex == -1){
     return response.status(400).json({error: 'Repository does not exist'});
@@ -91,5 +91,6 @@ app.post("/repositories/:id/like", (request, response) => {
 
   return response.json(repositories[findRepositoryIndex]);
 });
+
 
 module.exports = app;
